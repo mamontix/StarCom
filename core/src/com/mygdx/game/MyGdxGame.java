@@ -11,6 +11,8 @@ public class MyGdxGame extends ApplicationAdapter {
 	Background background;
 	Hero hero;
 	Asteroid[] asteroids;
+	static Bullet[] bullets;
+	Texture textureBullet;
 
 	public void create () {
 		batch = new SpriteBatch();
@@ -20,6 +22,11 @@ public class MyGdxGame extends ApplicationAdapter {
 		for (int i = 0; i < asteroids.length; i++) {
 			asteroids[i] = new Asteroid();
 		}
+		bullets = new Bullet[200];
+		for (int i = 0; i < bullets.length; i++) {
+			bullets[i] = new Bullet();
+		}
+		textureBullet = new Texture("bullet64x32.png");
 	}
 
 	public void render () {
@@ -32,6 +39,11 @@ public class MyGdxGame extends ApplicationAdapter {
 		for (int i = 0; i < asteroids.length; i++) {
 			asteroids[i].render(batch);
 		}
+		for (int i = 0; i < bullets.length; i++) {
+			if (bullets[i].active) {
+				batch.draw(textureBullet, bullets[i].position.x -32, bullets[i].position.y -16);
+			}
+		}
 		batch.end();
 	}
 
@@ -40,7 +52,19 @@ public class MyGdxGame extends ApplicationAdapter {
 		hero.update();
 		for (int i = 0; i < asteroids.length; i++) {
 			asteroids[i].update();
-
+		}
+		for (int i = 0; i < bullets.length; i++) {
+			if (bullets[i].active) {
+				bullets[i].update();
+				for (int j = 0; j < asteroids.length; j++) {
+					if (asteroids[j].rectangle.contains(bullets[i].position)) {
+						asteroids[j].recreate();
+						bullets[i].disable();
+						break;
+					}
+					
+				}
+			}
 		}
 	}
 
