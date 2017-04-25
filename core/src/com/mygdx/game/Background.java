@@ -22,7 +22,7 @@ public class Background {
             if (position.x < -20) {
                 position.x = 1280;
                 position.y = (float) Math.random() * 720;
-                speed = 0.5f + (float) Math.random() * 10.0f;
+                speed = 0.5f + (float) Math.random() * 5.0f;
             }
         }
     }
